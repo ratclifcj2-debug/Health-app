@@ -1,17 +1,2 @@
-const CACHE = 'chris-app-shell-v1';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', event => {
-  event.waitUntil(Promise.all([caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))), self.clients.claim()]));
-});
-self.addEventListener('fetch', event => {
-  const request = event.request;
-  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
-  if (request.mode === 'navigate') {
-    event.respondWith(fetch(request).then(response => {if (response.ok) {const copy=response.clone(); caches.open(CACHE).then(cache => cache.put('./index.html', copy));} return response;}).catch(() => caches.match('./index.html')));
-    return;
-  }
-  event.respondWith(caches.match(request).then(cached => cached || fetch(request)));
-});
+const CACHE='chris-app-v2026-11-23-running24';const ASSETS=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png',
+'./images/tibialis-raise.jpg','./images/reverse-step-up.jpg','./images/trap-3-raise.jpg','./images/hip-flexor-kick-out.jpg','./images/side-bend.jpg','./images/couch-stretch.jpg','./images/fire-hydrants.jpg','./images/clamshells.jpg','./images/deep-squats.jpg','./images/loaded-butterfly.jpg'];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{if(r.ok&&new URL(e.request.url).origin===self.location.origin){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match('./index.html'))))});
